@@ -1,0 +1,40 @@
+<?php
+// $Id:$
+
+/****************** MENU AND HELP FUNCTIONS **********************/
+
+/**
+ * Implementation of hook_help().
+ */
+function modify_authoring_information_help($section) {
+  $output = '';
+  switch ($section) {
+    case 'admin/help#modify_authoring_information':
+      $output = '<p>' . t('Modify Authoring Information creates 2 new permission sets (modify created date, modify author) that allow non admins to edit node authoring information. Useful for editing the Author attribute and node authored on attribute.') . '</p>';
+	  break;
+	  case 'admin/content/modify_authoring_information':
+	    $output = '<p>' . t('Modify Authoring Information creates 2 new permission sets (modify created date, modify author) that allow non admins to edit node authoring information. Useful for editing the Author attribute and node authored on attribute.') . '</p>';
+	  break;
+	}
+	return $output;
+}
+
+/**
+ * Implementation of hook_perm()
+**/
+function modify_authoring_information_perm() {
+  return array('modify created date', 'modify author');  
+}
+
+/**
+ * Implementation of hook_form_alter()
+ * This will target ALL node edit forms
+**/
+function modify_authoring_information_form_alter($form_id, &$form) {
+  //global $user;
+  if(strpos($form_id,'_node_form')) {
+    $form['author']['#access'] = user_access('modify created date') || user_access('modify author') || user_access('administer nodes');
+    $form['author']['name']['#access'] = user_access('modify author') || user_access('administer nodes');
+    $form['author']['date']['#access'] = user_access('modify created date') || user_access('administer nodes');
+  }  
+}

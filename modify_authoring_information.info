@@ -1,0 +1,5 @@
+; $Id: 
+name = Modify Authoring Information
+description = "Creates a permission set to allow assigned roles permission to edit node authoring information (date and author)."
+package = Bentley
+version = VERSION
